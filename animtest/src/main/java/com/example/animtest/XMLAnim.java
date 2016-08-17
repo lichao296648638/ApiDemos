@@ -76,25 +76,25 @@ public class XMLAnim extends Activity {
             colorBall.setX(0f);
             colorBall.setY(getHeight() / 2);
 
-            Keyframe kf1 = Keyframe.ofFloat(200f, 400f);
-            Keyframe kf2 = Keyframe.ofFloat(400f, 200f);
-            Keyframe kf3 = Keyframe.ofFloat(200f, 300f);
+            Keyframe kf1 = Keyframe.ofFloat(0f, 200f);
+            Keyframe kf2 = Keyframe.ofFloat(0.5f, 400f);
+            Keyframe kf3 = Keyframe.ofFloat(1.0f, 100f);
             PropertyValuesHolder widhtHolder = PropertyValuesHolder.ofKeyframe("width", kf1, kf2, kf3);
 
-            Keyframe kf5 = Keyframe.ofFloat(200f, 400f);
-            Keyframe kf6 = Keyframe.ofFloat(400f, 200f);
-            Keyframe kf7 = Keyframe.ofFloat(200f, 600f);
-            Keyframe kf8 = Keyframe.ofFloat(700f, 0f);
-            PropertyValuesHolder heightHolder = PropertyValuesHolder.ofKeyframe("height", kf5, kf6, kf7, kf8);
+            Keyframe kf4 = Keyframe.ofFloat(0f, 200f);
+            Keyframe kf5 = Keyframe.ofFloat(0.5f, 400f);
+            Keyframe kf6 = Keyframe.ofFloat(1.0f, 100f);
+            PropertyValuesHolder heightHolder = PropertyValuesHolder.ofKeyframe("height", kf4, kf5, kf6);
 //
-//            Keyframe kf9 = Keyframe.ofInt(0xffff0000, 0xff00ff00);
-//            Keyframe kf10 = Keyframe.ofInt(0xff00ff00, 0xff0000ff);
-//            Keyframe kf11 = Keyframe.ofInt(0xff0000ff, 0xffff0000);
-//            PropertyValuesHolder colorHolder = PropertyValuesHolder.ofKeyframe("color", kf9, kf10, kf11);
+            Keyframe kf7 = Keyframe.ofInt(0f, 0xffff8080);
+            Keyframe kf8 = Keyframe.ofInt(0.5f, 0xff80ff80);
+            Keyframe kf9 = Keyframe.ofInt(1.0f, 0xff8080ff);
+            PropertyValuesHolder colorHolder = PropertyValuesHolder.ofKeyframe("color", kf7, kf8, kf9);
+            colorHolder.setEvaluator(new ArgbEvaluator());
 
-            ObjectAnimator colorBallAnim = ObjectAnimator.ofPropertyValuesHolder(colorBall, widhtHolder);
+            ObjectAnimator colorBallAnim = ObjectAnimator.ofPropertyValuesHolder(colorBall, widhtHolder, heightHolder, colorHolder);
             colorBallAnim.setDuration(2000);
-            colorBallAnim.setRepeatMode(ValueAnimator.RESTART);
+            colorBallAnim.setRepeatMode(ValueAnimator.REVERSE);
             colorBallAnim.setRepeatCount(ValueAnimator.INFINITE);
 
             colorBallAnim.start();
