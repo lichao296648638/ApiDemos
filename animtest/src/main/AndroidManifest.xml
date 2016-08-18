@@ -7,14 +7,16 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true">
-        <activity android:name=".CodeAnim">
+        <activity android:name=".property.CodeAnim">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".XMLAnim"></activity>
+        <activity android:name=".property.XMLAnim" />
+        <activity android:name=".view.ViewAnim" />
+        <activity android:name=".drawable.DrawableAnim"></activity>
     </application>
 
 </manifest>

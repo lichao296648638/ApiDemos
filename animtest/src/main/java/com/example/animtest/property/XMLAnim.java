@@ -1,4 +1,4 @@
-package com.example.animtest;
+package com.example.animtest.property;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -17,24 +17,21 @@ import android.graphics.RadialGradient;
 import android.graphics.Shader;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnimationSet;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import com.example.animtest.R;
+import com.example.animtest.ShapeHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class XMLAnim extends Activity {
-
-    Button bt_switch;
     LinearLayout ll_container;
     ShapeHolder colorBall;
 
@@ -45,7 +42,6 @@ public class XMLAnim extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_xmlanim);
 
-        bt_switch = (Button) findViewById(R.id.bt_switch);
         ll_container = (LinearLayout) findViewById(R.id.ll_container);
 
         ll_container.addView(new MyAnimView(this));
@@ -166,9 +162,5 @@ public class XMLAnim extends Activity {
             balls.add(shapeHolder);
             return shapeHolder;
         }
-    }
-
-    public void switchActivity(View view) {
-        finish();
     }
 }

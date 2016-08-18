@@ -9,8 +9,19 @@
         android:id="@+id/bt_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="switchActivity"
         android:text="XMLAnim Activity" />
+
+    <Button
+        android:id="@+id/bt_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Animation Activity" />
+
+    <Button
+        android:id="@+id/bt_drawable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Drawable Animation Activity" />
 
 </LinearLayout>
 

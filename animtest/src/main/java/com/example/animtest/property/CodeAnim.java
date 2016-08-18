@@ -1,4 +1,4 @@
-package com.example.animtest;
+package com.example.animtest.property;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -25,13 +25,21 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.example.animtest.R;
+import com.example.animtest.ShapeHolder;
+import com.example.animtest.drawable.DrawableAnim;
+import com.example.animtest.view.ViewAnim;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class CodeAnim extends Activity {
+public class CodeAnim extends Activity implements View.OnClickListener {
 
     LinearLayout ll_container;
     Button bt_switch;
+    Button bt_view;
+    Button bt_drawable;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +51,32 @@ public class CodeAnim extends Activity {
         ll_container = (LinearLayout) findViewById(R.id.ll_container);
         ll_container.addView(new MyAnimView(this));
         bt_switch = (Button) findViewById(R.id.bt_switch);
+        bt_view = (Button) findViewById(R.id.bt_view);
+        bt_drawable = (Button) findViewById(R.id.bt_drawable);
+
+        bt_switch.setOnClickListener(this);
+        bt_view.setOnClickListener(this);
+        bt_drawable.setOnClickListener(this);
     }
 
-    public void switchActivity(View view) {
-        Intent intent = new Intent(this, XMLAnim.class);
-        startActivity(intent);
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.bt_switch:
+                intent = new Intent(this, XMLAnim.class);
+                startActivity(intent);
+                break;
+            case R.id.bt_view:
+                intent = new Intent(this, ViewAnim.class);
+                startActivity(intent);
+                break;
+            case R.id.bt_drawable:
+                intent = new Intent(this, DrawableAnim.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     class MyAnimView extends View {

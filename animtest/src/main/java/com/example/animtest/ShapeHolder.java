@@ -78,6 +78,7 @@ public class ShapeHolder {
     }
 
     public float getWidth() {
+
         return shape.getShape().getWidth();
     }
     public void setWidth(float width) {
