@@ -1,1 +1,1 @@
-include ':app', ':animtest'
+include ':app', ':animtest', ':datastoragetest'
