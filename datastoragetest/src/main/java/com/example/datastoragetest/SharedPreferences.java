@@ -12,10 +12,20 @@ import android.widget.TextView;
 
 import com.example.datastoragetest.sqlite.FeedEntry;
 import com.example.datastoragetest.sqlite.FeedReaderDBHelper;
+import com.example.datastoragetest.sqlite.BankEntry;
+import com.example.datastoragetest.sqlite.PhoneTypeEntry;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class SharedPreferences extends Activity implements View.OnClickListener {
 
 
+    //存放数据库的目录
+    String dirPath="/data/data/com.example.datastoragetest/databases";
     public static final String PREFS_NAME = "MyPrefsFile";
     boolean mSilentMode = true;
     TextView tv_silent_mode, tv_database;
@@ -49,13 +59,42 @@ public class SharedPreferences extends Activity implements View.OnClickListener 
 
         //Set silent mode
         tv_silent_mode.setText(mSilentMode + "");
-
+        imporDatabase();
         writeDatabase();
-        readDatabase();
+//        readDatabase();
         deleteDatabase();
         updateDatabase();
+        readPhone();
 
     }
+    public void imporDatabase() {
+
+        File dir = new File(dirPath);
+        if(!dir.exists()) {
+            dir.mkdir();
+        }
+        //数据库文件
+        File file = new File(dir, "phone.db");
+        try {
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+            //加载需要导入的数据库
+            InputStream is = this.getApplicationContext().getResources().openRawResource(R.raw.phone);
+            FileOutputStream fos = new FileOutputStream(file);
+            byte[] buffere=new byte[is.available()];
+            is.read(buffere);
+            fos.write(buffere);
+            is.close();
+            fos.close();
+
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void writeDatabase() {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -103,6 +142,24 @@ public class SharedPreferences extends Activity implements View.OnClickListener 
                 values,
                 FeedEntry._ID + "=10",
                 null);
+    }
+
+    private void readPhone() {
+        SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dirPath + "/phone.db", null, null);
+        Cursor cursor = db.rawQuery(
+                "select "
+                        + PhoneTypeEntry.TABLE_NAME + "." + PhoneTypeEntry.COLUMES_NAME_BANK + "," +
+                        BankEntry.TABLE_NAME + "." + BankEntry.COLUMES_NAME_PHONE +
+                " from "
+                        + PhoneTypeEntry.TABLE_NAME + "," + BankEntry.TABLE_NAME +
+                " where " +
+                        PhoneTypeEntry.TABLE_NAME + "." + PhoneTypeEntry.COLUMES_NAME_BANK +
+                        "=" + BankEntry.TABLE_NAME + "." + BankEntry.COLUMES_NAME_ID, null);
+        cursor.moveToFirst();
+        String phone = cursor.getString(
+                cursor.getColumnIndexOrThrow(BankEntry.COLUMES_NAME_PHONE)
+        );
+        tv_database.setText(phone);
     }
 
 
