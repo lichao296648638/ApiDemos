@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".property.XMLAnim" />
-        <activity android:name=".viewanim.ViewAnim"></activity>
+        <activity android:name=".viewanim.ViewAnim" />
+        <activity android:name=".drawableanim.DrawableAnim"></activity>
     </application>
 
 </manifest>

@@ -15,7 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.classtest.R;
-
+/**
+ * @author Neal 2016-08-23
+ *         用来展示在XML和代码中实现ViewAnimation的demo类
+ */
 public class ViewAnim extends Activity {
 
     //XML加载动画的TextView

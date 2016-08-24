@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 
 import com.example.classtest.R;
 import com.example.classtest.ShapeHolder;
+import com.example.classtest.drawableanim.DrawableAnim;
 import com.example.classtest.viewanim.ViewAnim;
 
 import java.util.ArrayList;
@@ -48,6 +49,8 @@ public class CodeAnim extends Activity implements View.OnClickListener {
     Button bt_xml;
     //切换至补间动画的按钮
     Button bt_view;
+    //切换至帧动画的按钮
+    Button bt_drawable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,10 @@ public class CodeAnim extends Activity implements View.OnClickListener {
         //设置跳转到补间动画的监听
         bt_view = (Button) findViewById(R.id.bt_view);
         bt_view.setOnClickListener(this);
+
+        //设置跳转到帧动画的监听
+        bt_drawable = (Button) findViewById(R.id.bt_drawable);
+        bt_drawable.setOnClickListener(this);
     }
 
     @Override
@@ -96,6 +103,10 @@ public class CodeAnim extends Activity implements View.OnClickListener {
                 break;
             case R.id.bt_view://点击Start View Anim
                 intent = new Intent(CodeAnim.this, ViewAnim.class);//当前Activity跳转到ViewAnim
+                startActivity(intent);//启动Acitivity
+                break;
+            case R.id.bt_drawable://点击Start Drawable Anim
+                intent = new Intent(CodeAnim.this, DrawableAnim.class);//当前Activity跳转到DrawableAnim
                 startActivity(intent);//启动Acitivity
                 break;
         }
