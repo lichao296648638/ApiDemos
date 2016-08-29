@@ -1,11 +1,10 @@
-package com.example.classtest.property;
+package com.example.classtest.animation.property;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.FloatEvaluator;
-import android.animation.IntEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -29,9 +28,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.classtest.R;
-import com.example.classtest.ShapeHolder;
-import com.example.classtest.drawableanim.DrawableAnim;
-import com.example.classtest.viewanim.ViewAnim;
+import com.example.classtest.animation.ShapeHolder;
+import com.example.classtest.animation.drawableanim.DrawableAnim;
+import com.example.classtest.animation.viewanim.ViewAnim;
 
 import java.util.ArrayList;
 import java.util.List;

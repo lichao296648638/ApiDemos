@@ -1,4 +1,4 @@
-package com.example.classtest.drawableanim;
+package com.example.classtest.animation.drawableanim;
 
 import android.app.Activity;
 import android.graphics.drawable.AnimationDrawable;

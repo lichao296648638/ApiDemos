@@ -1,4 +1,4 @@
-package com.example.classtest.property;
+package com.example.classtest.animation.property;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -21,13 +21,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 
 import com.example.classtest.R;
-import com.example.classtest.ShapeHolder;
+import com.example.classtest.animation.ShapeHolder;
 
 import java.util.ArrayList;
 import java.util.List;

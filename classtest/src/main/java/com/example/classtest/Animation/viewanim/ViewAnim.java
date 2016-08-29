@@ -1,6 +1,5 @@
-package com.example.classtest.viewanim;
+package com.example.classtest.animation.viewanim;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.animation.AccelerateInterpolator;
@@ -11,7 +10,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.classtest.R;

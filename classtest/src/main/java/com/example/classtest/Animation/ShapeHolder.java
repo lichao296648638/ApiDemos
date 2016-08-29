@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.classtest;
+package com.example.classtest.animation;
 
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
