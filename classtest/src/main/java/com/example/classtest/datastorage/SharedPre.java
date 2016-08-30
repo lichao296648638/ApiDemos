@@ -3,6 +3,7 @@ package com.example.classtest.datastorage;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.view.View;
@@ -30,6 +31,10 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
     Button bt_cache;
     //ExternalStorage  页面的按钮
     Button bt_external;
+    //显示数据库内容的文本
+    TextView tv_database;
+    //自定义数据库帮助类
+    MyOpenHelper mHelper;
 
     //Shared Preferences文件名
     private final String SPFILE_NAME = "spfile";
@@ -43,11 +48,16 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initView() {
+        //获得openhleper实例
+        mHelper = new MyOpenHelper(this);
+        //加载控件
         tv_spvalue = (TextView) findViewById(R.id.tv_spValue);
         bt_writeSp = (Button) findViewById(R.id.bt_writeSp);
         bt_internal = (Button) findViewById(R.id.bt_internal);
         bt_cache = (Button) findViewById(R.id.bt_cache);
         bt_external = (Button) findViewById(R.id.bt_external);
+        tv_database = (TextView) findViewById(R.id.tv_database);
+        //操作数据
         readSPValue();
 
         createDatabase();
@@ -124,8 +134,7 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
      * 创建数据库
      */
     private void createDatabase() {
-        //获得openhleper实例
-        MyOpenHelper mHelper = new MyOpenHelper(this);
+
         //通过帮助类实例化一个可写入的数据库对象
         SQLiteDatabase db = mHelper.getWritableDatabase();
         //准备好待写入的值
@@ -134,7 +143,76 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
         contentValues.put(TypeEntry.COLUMMNS_NAME_SUBTABLE, "localservice");
         //向数据库中插入值
         db.insert(TypeEntry.TABLE_NAME,//表名
-                  null,//当插入空行或者contentvalues为空时替代的空数据内容
-                  contentValues);//插入的值
+                null,//当插入空行或者contentvalues为空时替代的空数据内容
+                contentValues);//插入的值
+        //更新数据库
+        updateDatabase();
+        //读取数据库中的内容
+        readDatabase();
+        //删除数据库中的数据
+        deleteDatabase();
     }
+
+    /**
+     * 从数据库中读取数据
+     */
+    private void readDatabase() {
+        //根据自定义的帮助类获取读取数据库的database对象
+        SQLiteDatabase db = mHelper.getReadableDatabase();
+        //查询数据库
+        Cursor c = db.query(
+                TypeEntry.TABLE_NAME, //表名
+                new String[]{TypeEntry.COLUMMNS_NAME_TYPE},//查询的列
+                null,//相当于WHERE之后的语句
+                null,//对WHERE中占位符的补全
+                null,//相当于GROUP BY
+                null,//相当于HAVING
+                null//相当于ORDER BY
+        );
+        //将游标移动到第一行
+        c.moveToFirst();
+        //创建一个保存数据的临时字符
+        String temp = "";
+        //利用游标遍历查询到的列
+        do {
+            //拼接指定下标查询到的字符串
+            temp += c.getString(
+                    //返回当前行指定列的下标
+                    c.getColumnIndexOrThrow(TypeEntry.COLUMMNS_NAME_TYPE)
+            )
+                    + "\n";
+        } while (c.moveToNext());
+        //显示在UI上
+        tv_database.setText(temp);
+    }
+
+    /**
+     * 从数据库中删除数据
+     */
+    private void deleteDatabase() {
+        //根据帮助类获取可写的database对象
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        //从数据库中删除第三行
+        db.delete(TypeEntry.TABLE_NAME, //TABLE NAME
+                TypeEntry._ID + "=3", //SELECTION
+                null);//Selection args
+    }
+
+    /**
+     * 更新数据库中的数据
+     */
+    private void updateDatabase(){
+        //根据帮助类获取可写的database对象
+        SQLiteDatabase db = mHelper.getWritableDatabase();
+        //准备更新入表内的值
+        ContentValues values = new ContentValues();
+        values.put(TypeEntry.COLUMMNS_NAME_TYPE, "公共服务");
+        //更新数据中_id为4的行中的数据
+        db.update(TypeEntry.TABLE_NAME,//表名
+                values,//放入的值
+                TypeEntry._ID + "=1 or " + TypeEntry._ID + "=2",//where
+                null//where args
+        );
+    }
+
 }
