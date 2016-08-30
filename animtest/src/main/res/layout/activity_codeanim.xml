@@ -23,5 +23,11 @@
         android:layout_height="wrap_content"
         android:text="Drawable Animation Activity" />
 
+    <Button
+        android:id="@+id/bt_transition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Layout Transition Activity" />
+
 </LinearLayout>
 

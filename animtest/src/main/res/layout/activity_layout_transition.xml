@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.animtest.layouttransition.LayoutTransition">
+    tools:context=".layouttransition.Transition">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
@@ -17,19 +17,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add View"
+            android:onClick="addButton"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/bt_removeView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="removeButton"
             android:text="Remove View"
             android:textAllCaps="false" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_container"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
         android:orientation="vertical"></LinearLayout>

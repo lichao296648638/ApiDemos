@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import com.example.animtest.R;
 import com.example.animtest.ShapeHolder;
 import com.example.animtest.drawable.DrawableAnim;
+import com.example.animtest.layouttransition.Transition;
 import com.example.animtest.view.ViewAnim;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class CodeAnim extends Activity implements View.OnClickListener {
     Button bt_switch;
     Button bt_view;
     Button bt_drawable;
+    Button bt_transition;
     Intent intent;
 
     @Override
@@ -53,10 +55,12 @@ public class CodeAnim extends Activity implements View.OnClickListener {
         bt_switch = (Button) findViewById(R.id.bt_switch);
         bt_view = (Button) findViewById(R.id.bt_view);
         bt_drawable = (Button) findViewById(R.id.bt_drawable);
+        bt_transition = (Button) findViewById(R.id.bt_transition);
 
         bt_switch.setOnClickListener(this);
         bt_view.setOnClickListener(this);
         bt_drawable.setOnClickListener(this);
+        bt_transition.setOnClickListener(this);
     }
 
 
@@ -74,6 +78,10 @@ public class CodeAnim extends Activity implements View.OnClickListener {
                 break;
             case R.id.bt_drawable:
                 intent = new Intent(this, DrawableAnim.class);
+                startActivity(intent);
+                break;
+            case R.id.bt_transition:
+                intent = new Intent(this, Transition.class);
                 startActivity(intent);
                 break;
         }
