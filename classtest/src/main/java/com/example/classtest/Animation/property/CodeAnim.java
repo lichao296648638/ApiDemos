@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import com.example.classtest.R;
 import com.example.classtest.animation.ShapeHolder;
 import com.example.classtest.animation.drawableanim.DrawableAnim;
+import com.example.classtest.animation.transition.Transition;
 import com.example.classtest.animation.viewanim.ViewAnim;
 
 import java.util.ArrayList;
@@ -50,6 +51,8 @@ public class CodeAnim extends Activity implements View.OnClickListener {
     Button bt_view;
     //切换至帧动画的按钮
     Button bt_drawable;
+    //切换至布局过渡动画的按钮
+    Button bt_transition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +93,10 @@ public class CodeAnim extends Activity implements View.OnClickListener {
         //设置跳转到帧动画的监听
         bt_drawable = (Button) findViewById(R.id.bt_drawable);
         bt_drawable.setOnClickListener(this);
+
+        //设置跳转到布局过渡动画的监听
+        bt_transition = (Button) findViewById(R.id.bt_transition);
+        bt_transition.setOnClickListener(this);
     }
 
     @Override
@@ -106,6 +113,10 @@ public class CodeAnim extends Activity implements View.OnClickListener {
                 break;
             case R.id.bt_drawable://点击Start Drawable Anim
                 intent = new Intent(CodeAnim.this, DrawableAnim.class);//当前Activity跳转到DrawableAnim
+                startActivity(intent);//启动Acitivity
+                break;
+            case R.id.bt_transition://点击Start Layout Transition Anim
+                intent = new Intent(CodeAnim.this, Transition.class);//当前Activity跳转到TramsotopmAnim
                 startActivity(intent);//启动Acitivity
                 break;
         }

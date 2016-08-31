@@ -27,4 +27,11 @@
         android:text="Start Drawable Anim"
         android:textAllCaps="false" />
 
+    <Button
+        android:id="@+id/bt_transition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Layout Transition Anim"
+        android:textAllCaps="false" />
+
 </LinearLayout>

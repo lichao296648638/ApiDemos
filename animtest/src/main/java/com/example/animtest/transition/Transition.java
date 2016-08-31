@@ -1,4 +1,4 @@
-package com.example.animtest.layouttransition;
+package com.example.animtest.transition;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -12,20 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import com.example.animtest.R;
 
 public class Transition extends Activity {
 
     LinearLayout ll_container;
+    ListView lv_transition;
     int i, j;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_layout_transition);
-        ll_container = (LinearLayout) findViewById(R.id.ll_container);
-        setTransition();
+        setContentView(R.layout.activity_transition);
+//        ll_container = (LinearLayout) findViewById(R.id.ll_container);
+        lv_transition = (ListView) findViewById(R.id.lv_transition);
+
+        lv_transition.setAdapter(new TransitionAdapter(this));
+//        setTransition();
     }
 
     public void addButton(View view) {

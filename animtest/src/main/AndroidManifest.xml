@@ -17,7 +17,7 @@
         <activity android:name=".property.XMLAnim" />
         <activity android:name=".view.ViewAnim" />
         <activity android:name=".drawable.DrawableAnim" />
-        <activity android:name=".layouttransition.Transition"></activity>
+        <activity android:name=".transition.Transition"></activity>
     </application>
 
 </manifest>

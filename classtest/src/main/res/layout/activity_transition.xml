@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_layout_transition"
+    android:id="@+id/activity_transition"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".layouttransition.Transition">
+    tools:context="com.example.classtest.animation.transition.Transition">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/bt_addView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add View"
             android:onClick="addButton"
+            android:text="Add View"
             android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/bt_removeView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="removeButton"
@@ -34,5 +31,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <!--android:layoutAnimation="@anim/transition_item"-->
+    <ListView
+        android:id="@+id/lv_transition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ListView>
 </LinearLayout>

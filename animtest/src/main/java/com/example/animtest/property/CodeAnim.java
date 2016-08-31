@@ -28,7 +28,7 @@ import android.widget.LinearLayout;
 import com.example.animtest.R;
 import com.example.animtest.ShapeHolder;
 import com.example.animtest.drawable.DrawableAnim;
-import com.example.animtest.layouttransition.Transition;
+import com.example.animtest.transition.Transition;
 import com.example.animtest.view.ViewAnim;
 
 import java.util.ArrayList;
