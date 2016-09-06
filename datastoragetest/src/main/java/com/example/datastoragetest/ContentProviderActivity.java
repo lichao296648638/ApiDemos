@@ -1,12 +1,18 @@
 package com.example.datastoragetest;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.LoaderManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.Contacts;
 import android.provider.MediaStore;
 import android.provider.UserDictionary;
 import android.support.v4.app.ActivityCompat;
@@ -21,7 +27,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
-public class ContentProviderActivity extends AppCompatActivity {
+public class ContentProviderActivity extends
+        Activity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     TextView tv_data;
     EditText et_search;
@@ -33,21 +40,26 @@ public class ContentProviderActivity extends AppCompatActivity {
 
     String mSelectionClause = null;
 
+    // If non-null, this is the current filter the user has provided.
+    String mCurFilter;
+
     String[] mSelectionArgs = {""};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_content_provider);
         tv_data = (TextView) findViewById(R.id.tv_data);
         et_search = (EditText) findViewById(R.id.et_search);
         bt_search = (Button) findViewById(R.id.bt_search);
-        queryType();
+//        queryType();
 //        delete();
 //        update();
 //        insert();
 //        queryProvider();
 //        querySingleRow();
+        getLoaderManager().initLoader(0, null, this);
 
     }
 
@@ -191,6 +203,63 @@ public class ContentProviderActivity extends AppCompatActivity {
         cursor.moveToFirst();
         tv_data.setText(cursor.getType(0) + "\n"
                 + getContentResolver().getType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
+
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        // This is called when a new Loader needs to be created.  This
+        // sample only has one Loader, so we don't care about the ID.
+        // First, pick the base URI to use depending on whether we are
+        // currently filtering.
+
+        String[] CONTACTS_SUMMARY_PROJECTION = new String[]{
+            Contacts._ID,
+            Contacts.DISPLAY_NAME
+        };
+
+        Uri baseUri;
+        if (mCurFilter != null) {
+            baseUri = Uri.withAppendedPath(Contacts.CONTENT_FILTER_URI,
+                    Uri.encode(mCurFilter));
+        } else {
+            baseUri = Contacts.CONTENT_URI;
+        }
+
+        // Now create and return a CursorLoader that will take care of
+        // creating a Cursor for the data being displayed.
+        String select = "((" + Contacts.DISPLAY_NAME + " NOTNULL) AND ("
+                + Contacts.HAS_PHONE_NUMBER + "=1) AND ("
+                + Contacts.DISPLAY_NAME + " != '' ))";
+        return new CursorLoader(this, baseUri,
+                CONTACTS_SUMMARY_PROJECTION, select, null,
+                Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC");
+    }
+
+
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        data.moveToFirst();
+
+        int idIndex = data.getColumnIndexOrThrow(Contacts._ID);
+        int displayIndex = data.getColumnIndexOrThrow(Contacts.DISPLAY_NAME);
+        String temp = "";
+        if (data != null && data.getCount() > 0) {
+            do {
+                String id = data.getString(idIndex);
+                String display = data.getString(displayIndex);
+                temp += "id = " + id + "\n" +
+                        "display = " + display + "\n\n";
+            } while (data.moveToNext());
+        }
+        tv_data.setText(temp);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
 
     }
 }
