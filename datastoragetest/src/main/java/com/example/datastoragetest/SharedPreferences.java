@@ -1,11 +1,15 @@
 package com.example.datastoragetest;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,7 +33,7 @@ public class SharedPreferences extends Activity implements View.OnClickListener 
     public static final String PREFS_NAME = "MyPrefsFile";
     boolean mSilentMode = true;
     TextView tv_silent_mode, tv_database;
-    Button bt_clear_sp, bt_internal_storage, bt_cache, bt_external_storage;
+    Button bt_clear_sp, bt_internal_storage, bt_cache, bt_external_storage, bt_content_provider;
     android.content.SharedPreferences settings;
     FeedReaderDBHelper mDbHelper;
 
@@ -47,6 +51,7 @@ public class SharedPreferences extends Activity implements View.OnClickListener 
         bt_cache = (Button) findViewById(R.id.bt_cache);
         bt_external_storage = (Button) findViewById(R.id.bt_external_storage);
         tv_database = (TextView) findViewById(R.id.tv_database);
+        bt_content_provider = (Button) findViewById(R.id.bt_content_provider);
         // Restore preferences
         settings = getSharedPreferences(PREFS_NAME, 0);
         mSilentMode = settings.getBoolean("silentMode", false);
@@ -56,6 +61,7 @@ public class SharedPreferences extends Activity implements View.OnClickListener 
         bt_internal_storage.setOnClickListener(this);
         bt_cache.setOnClickListener(this);
         bt_external_storage.setOnClickListener(this);
+        bt_content_provider.setOnClickListener(this);
 
         //Set silent mode
         tv_silent_mode.setText(mSilentMode + "");
@@ -65,7 +71,12 @@ public class SharedPreferences extends Activity implements View.OnClickListener 
         deleteDatabase();
         updateDatabase();
         readPhone();
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    0);
+        }
     }
     public void imporDatabase() {
 
@@ -200,6 +211,10 @@ public class SharedPreferences extends Activity implements View.OnClickListener 
                 break;
             case R.id.bt_external_storage:
                 intent = new Intent(SharedPreferences.this, ExternalStorage.class);
+                startActivity(intent);
+                break;
+            case R.id.bt_content_provider:
+                intent = new Intent(SharedPreferences.this, ContentProviderActivity.class);
                 startActivity(intent);
                 break;
         }

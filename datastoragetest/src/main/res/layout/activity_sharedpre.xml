@@ -48,10 +48,20 @@
         android:text="External Storage Acitivty"
         android:textAllCaps="false" />
 
-    <TextView
+    <Button
+        android:id="@+id/bt_content_provider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/bt_external_storage"
+        android:text="Content Provider Acitivty"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:layout_below="@+id/bt_content_provider"
         android:id="@+id/tv_database"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="show database" />
+
+
 </RelativeLayout>
