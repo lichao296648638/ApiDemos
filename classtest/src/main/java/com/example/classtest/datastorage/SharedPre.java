@@ -1,11 +1,15 @@
 package com.example.classtest.datastorage;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,12 +33,16 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
     Button bt_internal;
     //跳转到Cache file 页面的按钮
     Button bt_cache;
-    //ExternalStorage  页面的按钮
+    //跳转到ExternalStorage  页面的按钮
     Button bt_external;
+    //跳转到ContentProviderActivity  页面的按钮
+    Button bt_provider;
     //显示数据库内容的文本
     TextView tv_database;
     //自定义数据库帮助类
     MyOpenHelper mHelper;
+    //申请外部存储器写权限的申请码
+    private final int WRITE_EXTERNAL_STORAGE = 0;
 
     //Shared Preferences文件名
     private final String SPFILE_NAME = "spfile";
@@ -48,6 +56,7 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initView() {
+
         //获得openhleper实例
         mHelper = new MyOpenHelper(this);
         //加载控件
@@ -57,10 +66,14 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
         bt_cache = (Button) findViewById(R.id.bt_cache);
         bt_external = (Button) findViewById(R.id.bt_external);
         tv_database = (TextView) findViewById(R.id.tv_database);
+        bt_provider = (Button) findViewById(R.id.bt_provider);
         //操作数据
         readSPValue();
 
         createDatabase();
+
+        //动态申请权限
+        requestPermission();
 
     }
 
@@ -70,6 +83,7 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
         bt_internal.setOnClickListener(this);
         bt_cache.setOnClickListener(this);
         bt_external.setOnClickListener(this);
+        bt_provider.setOnClickListener(this);
     }
 
     /**
@@ -125,6 +139,11 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
             case R.id.bt_external://Start external storage activity
                 //跳转到外部存储器demo页面
                 intent = new Intent(SharedPre.this, ExternalStorage.class);
+                startActivity(intent);
+                break;
+            case R.id.bt_provider://Start ContentProvider activity
+                //跳转到ContentProvider demo页面
+                intent = new Intent(SharedPre.this, ContentProviderActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -201,7 +220,7 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
     /**
      * 更新数据库中的数据
      */
-    private void updateDatabase(){
+    private void updateDatabase() {
         //根据帮助类获取可写的database对象
         SQLiteDatabase db = mHelper.getWritableDatabase();
         //准备更新入表内的值
@@ -215,4 +234,35 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
         );
     }
 
+    /**
+     * @description 申请运行时权限
+     */
+    private void requestPermission() {
+        //检查是否拥有外部存储器写权限
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_EXTERNAL_STORAGE权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    WRITE_EXTERNAL_STORAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        //判断申请码
+        switch (requestCode) {
+            case WRITE_EXTERNAL_STORAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //申请的第一个权限成功后
+
+                } else {
+                    //申请的第一个权限失败后
+                    finish();
+                }
+
+                break;
+        }
+    }
 }
