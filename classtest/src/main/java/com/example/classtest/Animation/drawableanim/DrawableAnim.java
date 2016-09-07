@@ -12,7 +12,7 @@ import com.example.classtest.R;
 
 /**
  * @author Neal 2016-08-25
- *         用来展示在XML和代码中实现DrawableAnimation的demo类
+ * @description  用来展示在XML和代码中实现DrawableAnimation的demo类
  */
 public class DrawableAnim extends Activity {
     ImageView iv_fish_XML;//通过XML实现帧动画的ImageView
