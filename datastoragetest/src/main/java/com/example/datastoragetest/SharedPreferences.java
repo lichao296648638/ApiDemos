@@ -77,9 +77,16 @@ public class SharedPreferences extends Activity implements View.OnClickListener 
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     0);
         }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            //WRITE_CONTACTS
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CONTACTS},
+                    0);
+        }
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
+            //READ_CONTACTS
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS},
                     0);
         }

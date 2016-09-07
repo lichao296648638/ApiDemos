@@ -3,14 +3,18 @@ package com.example.datastoragetest;
 import android.Manifest;
 import android.app.Activity;
 import android.app.LoaderManager;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.content.OperationApplicationException;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.MediaStore;
@@ -26,6 +30,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class ContentProviderActivity extends
         Activity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -59,7 +65,9 @@ public class ContentProviderActivity extends
 //        insert();
 //        queryProvider();
 //        querySingleRow();
-        getLoaderManager().initLoader(0, null, this);
+//        getLoaderManager().initLoader(0, null, this);
+
+        batchOperate();
 
     }
 
@@ -137,7 +145,7 @@ public class ContentProviderActivity extends
 
         if (TextUtils.isEmpty(mSearchString)) {
             mSelectionClause = null;
-            mSelectionArgs[0] = "";
+            mSelectionArgs = null;
         } else {
             mSelectionClause = MediaStore.Images.Media._ID + " = ?";
             mSelectionArgs[0] = mSearchString;
@@ -262,4 +270,55 @@ public class ContentProviderActivity extends
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+    private void batchOperate() {
+
+        String mSelectionClause = ContactsContract.RawContacts._ID + "=1";
+
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+
+        ops.add(ContentProviderOperation
+                .newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withYieldAllowed(true)
+                .build());
+
+
+
+        ops.add(
+                ContentProviderOperation.newAssertQuery(ContactsContract.RawContacts.CONTENT_URI)
+                .withSelection(mSelectionClause, null)
+                .withExpectedCount(1)
+                .build()
+        );
+
+        ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, "235555555")
+                .build()
+        );
+
+        // 批量执行,返回执行结果集
+        ContentProviderResult[] results = null;
+        try {
+            String temp = "";
+            results = getContentResolver().applyBatch(ContactsContract.AUTHORITY,
+                    ops);
+            for (int i = 0; i < results.length;i ++) {
+                temp += results[i].toString() + "\n";
+            }
+            tv_data.setText(temp);
+
+        } catch (RemoteException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
 }
+
