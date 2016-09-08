@@ -1,10 +1,15 @@
 package com.example.classtest.datastorage;
 
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.RemoteException;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +27,8 @@ import com.example.classtest.BaseActivity;
 import com.example.classtest.R;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 /**
  * @author Neal 2016-09-06
@@ -61,7 +68,9 @@ public class ContentProviderActivity extends BaseActivity {
 
 //        updateImage();
 
-        deleteImages();
+//        deleteImages();
+
+        batchOperateContacts();
     }
 
     @Override
@@ -70,8 +79,8 @@ public class ContentProviderActivity extends BaseActivity {
     }
 
     /**
-     * @description 使用ContentProvider的方式查询手机中的图片信息
      * @param view 点击的视图
+     * @description 使用ContentProvider的方式查询手机中的图片信息
      */
     public void queryImage(View view) {
         //查询条件语句
@@ -81,7 +90,7 @@ public class ContentProviderActivity extends BaseActivity {
         //用户输入的查询关键词
         String mSearch;
         //构造查询的投影
-        String[] mProjection = new String[] {
+        String[] mProjection = new String[]{
                 MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DISPLAY_NAME//图片显示的名字
         };
@@ -90,12 +99,12 @@ public class ContentProviderActivity extends BaseActivity {
             //构造查询条件语句
             mSlectionClause = null;
             //构造查询条件的参数
-             mSlectionArgs = null;
-        }else {
+            mSlectionArgs = null;
+        } else {
             //构造查询条件语句
             mSlectionClause = MediaStore.Images.Media._ID + " = ?";
             //构造查询条件的参数
-             mSlectionArgs[0] = mSearch;
+            mSlectionArgs[0] = mSearch;
         }
 
         //查询指定uri的ContentProvider，返回一个游标
@@ -130,7 +139,7 @@ public class ContentProviderActivity extends BaseActivity {
                 String id = mCursor.getString(idIndex);
                 String display = mCursor.getString(displayIndex);
                 temp += "id = " + id + "\n" + "display = " + display + "\n\n";
-            }while (mCursor.moveToNext());
+            } while (mCursor.moveToNext());
 
             //构建简易适配器展示数据的控件列表
             int[] mImageListItems = new int[]{
@@ -151,7 +160,7 @@ public class ContentProviderActivity extends BaseActivity {
             //关闭游标
 //            mCursor.close();
         }
-       }
+    }
 
 
     /**
@@ -171,7 +180,7 @@ public class ContentProviderActivity extends BaseActivity {
         );
 
         //判断游标状态,不为空且有数据时开始遍历
-        if(mCursor != null && mCursor.getCount() > 0){
+        if (mCursor != null && mCursor.getCount() > 0) {
             //确定需要的数据的下标，减少IndexOrThrow的调用，提高效率
             int idIndex = mCursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID);
             int heightIndex = mCursor.getColumnIndexOrThrow(MediaStore.Images.Media.HEIGHT);
@@ -183,7 +192,7 @@ public class ContentProviderActivity extends BaseActivity {
                 String id = mCursor.getString(idIndex);
                 String height = mCursor.getString(heightIndex);
                 temp += "id = " + id + "\n" + "height = " + height + "\n\n";
-            }while (mCursor.moveToNext());
+            } while (mCursor.moveToNext());
             //关闭游标
             mCursor.close();
             //设置UI
@@ -196,7 +205,7 @@ public class ContentProviderActivity extends BaseActivity {
     /**
      * @description 在MediaStore.Images.Media.EXTERNAL_CONTENT_URI中插入一条新数据(一张新图)
      */
-    private void insertNewImage(){
+    private void insertNewImage() {
         //用来保存插入数据返回的uri
         Uri mNewUri = null;
         //一条待插入的数据
@@ -250,7 +259,7 @@ public class ContentProviderActivity extends BaseActivity {
         //构建删除条件的参数
         String[] mSelectionArgs = {"Neal", "Neal", "147%"};
         //执行删除,返回删除的行数
-        mRowsDeleted =  getContentResolver().delete(
+        mRowsDeleted = getContentResolver().delete(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, //需要删除的内容的表对应的uri
                 mSelectionClause, //删除条件
                 mSelectionArgs //删除条件参数
@@ -258,6 +267,81 @@ public class ContentProviderActivity extends BaseActivity {
         //更新UI
         tv_data.setText(mRowsDeleted + "");
 
+
+    }
+
+    /**
+     * @description 批量操作通讯录数据
+     */
+    private void batchOperateContacts() {
+        //定义一个储存了批量操作的集合
+        ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+
+        //添加一个插入新通讯录数据的操作
+        ops.add(
+                ContentProviderOperation
+                        .newInsert(ContactsContract.RawContacts.CONTENT_URI)//要插入的uri
+                        .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)//ACCOUNT_TYPE列,必选
+                        .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)//ACCOUNT_NAME列,必选
+                        .build()//构建
+
+        );
+
+        //构建选择语句
+        String mSelectionClause = ContactsContract.RawContacts._ID + "=1";
+        //添加一个删除某条通讯录数据的操作
+        ops.add(
+                ContentProviderOperation
+                        .newDelete(ContactsContract.RawContacts.CONTENT_URI)//要删除的uri
+                        .withSelection(mSelectionClause, null)//删除的选择语句
+                        .build()//构建
+        );
+
+        //添加一个通讯录断点查询的操作
+        ops.add(
+                ContentProviderOperation
+                        .newAssertQuery(ContactsContract.RawContacts.CONTENT_URI)//要查询的uri
+                        .withSelection(mSelectionClause, null)//查询的选择语句
+                        .withExpectedCount(0)
+                        .build()//构建
+        );
+
+        //通过之前下下标为0的的ContentProviderOperation返回的
+        // Uri中的ContactsContract.Data.RAW_CONTACT_ID作为
+        // 选择条件插入数据
+        //data表与raw_contacts是关联的关系
+        ops.add(
+                ContentProviderOperation
+                        //要插入数据的uri
+                        .newInsert(ContactsContract.Data.CONTENT_URI)
+                        //根据批处理的第一次操作所返回的ContactsContract.Data.CONTACT_ID来进行插入数据操作
+                        .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                        //DATA1代表了电话号码,给该联系人插入一条电话数据
+                        .withValue(ContactsContract.Data.DATA1, "123456")
+                        //在给Data表插入数据时必须制定该条数据的MIME类型
+                        .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                        .build()
+        );
+
+
+        try {
+            //保存批处理的操作结果
+            ContentProviderResult[] results =
+                    //执行批处理操作
+                    getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
+            //保存操作结果的临时变量
+            String temp = "";
+            //遍历结果
+            for (int i = 0;i < results.length;i ++) {
+                temp += results[i].toString() + "\n\n";
+            }
+            //更新UI
+            tv_data.setText(temp);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (OperationApplicationException e) {
+            e.printStackTrace();
+        }
 
     }
 

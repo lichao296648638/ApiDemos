@@ -43,7 +43,10 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
     MyOpenHelper mHelper;
     //申请外部存储器写权限的申请码
     private final int WRITE_EXTERNAL_STORAGE = 0;
-
+    //申请读取通讯录权限的申请码
+    private final int READ_CONTACT = 1;
+    //申请写入通讯录权限的申请码
+    private final int WRITE_CONTACT = 2;
     //Shared Preferences文件名
     private final String SPFILE_NAME = "spfile";
     //SharedPrenferences存入的布尔值key
@@ -245,6 +248,22 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     WRITE_EXTERNAL_STORAGE);
         }
+
+        //检查是否拥读取通讯录权限
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请READ_CONTACTS权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS},
+                    READ_CONTACT);
+        }
+
+        //检查是否拥写入通讯录权限
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            //申请WRITE_CONTACT权限
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CONTACTS},
+                    WRITE_CONTACT);
+        }
     }
 
     @Override
@@ -254,6 +273,28 @@ public class SharedPre extends BaseActivity implements View.OnClickListener {
         //判断申请码
         switch (requestCode) {
             case WRITE_EXTERNAL_STORAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //申请的第一个权限成功后
+
+                } else {
+                    //申请的第一个权限失败后
+                    finish();
+                }
+
+                break;
+
+            case READ_CONTACT:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //申请的第一个权限成功后
+
+                } else {
+                    //申请的第一个权限失败后
+                    finish();
+                }
+
+                break;
+
+            case WRITE_CONTACT:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //申请的第一个权限成功后
 
