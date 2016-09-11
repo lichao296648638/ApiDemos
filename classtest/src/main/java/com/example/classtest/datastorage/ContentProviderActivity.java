@@ -252,7 +252,6 @@ public class ContentProviderActivity extends BaseActivity {
         //删除的行
         int mRowsDeleted = 0;
         //构建删除的条件
-
         String mSelectionClause = MediaStore.Images.Media.DISPLAY_NAME + " like ? "
                 + " or " + MediaStore.Images.Media.TITLE + " like ? " + " or " +
                 MediaStore.Images.Media.TITLE + " like ? ";
@@ -269,7 +268,6 @@ public class ContentProviderActivity extends BaseActivity {
 
 
     }
-
     /**
      * @description 批量操作通讯录数据
      */

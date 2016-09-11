@@ -26,6 +26,7 @@
         <activity android:name=".CacheFile" />
         <activity android:name=".ExternalStorage" />
         <activity android:name=".ContentProviderActivity"></activity>
+
     </application>
 
 </manifest>
