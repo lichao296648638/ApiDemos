@@ -1,16 +1,20 @@
 package com.example.classtest.datastorage;
 
+import android.app.LoaderManager;
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderResult;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -35,7 +39,7 @@ import java.util.ArrayList;
  * @description 内容提供者功能演示demo类
  */
 
-public class ContentProviderActivity extends BaseActivity {
+public class ContentProviderActivity extends BaseActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     //用来显示获取的数据内容
     TextView tv_data;
@@ -70,12 +74,33 @@ public class ContentProviderActivity extends BaseActivity {
 
 //        deleteImages();
 
-        batchOperateContacts();
+//        batchOperateContacts();
+
+        //初始化加载器,会回调onCreateLoader方法
+        getLoaderManager().initLoader(
+                0,  //加载器ID
+                null, //传入的bundle参数
+                this);//回调对象
+
     }
 
     @Override
     protected void setListener() {
 
+    }
+
+    /**
+     * 搜索匹配的联系人
+     * @param view 点击的视图
+     */
+
+    public void searchContacts(View view) {
+        //释放数据
+        getLoaderManager().restartLoader(
+                0,//要释放的加载器的id
+                null,//bundle参数
+                this//回调类
+        );
     }
 
     /**
@@ -268,6 +293,7 @@ public class ContentProviderActivity extends BaseActivity {
 
 
     }
+
     /**
      * @description 批量操作通讯录数据
      */
@@ -330,7 +356,7 @@ public class ContentProviderActivity extends BaseActivity {
             //保存操作结果的临时变量
             String temp = "";
             //遍历结果
-            for (int i = 0;i < results.length;i ++) {
+            for (int i = 0; i < results.length; i++) {
                 temp += results[i].toString() + "\n\n";
             }
             //更新UI
@@ -343,4 +369,66 @@ public class ContentProviderActivity extends BaseActivity {
 
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        //要查询的uri
+        Uri mUri = ContactsContract.Contacts.CONTENT_URI;
+        //要查询的列
+        String[] mProjection = new String[]{
+                //id
+                ContactsContract.Contacts._ID,
+                //显示名称
+                ContactsContract.Contacts.DISPLAY_NAME
+        };
+        //用户的选择条件
+        String mFilter = et_search.getText().toString();
+        //判断用户的选择条件
+        if(TextUtils.isEmpty(mFilter)){
+            mFilter = "0";
+        }
+        //选择条件,已有ID大于用户输入的ID
+        String mSelection = ContactsContract.Contacts._ID + " > " + mFilter;
+
+        return new CursorLoader(
+                this,//上下文
+                mUri,//要查询的uir
+                mProjection,//要查询的列
+                mSelection,//选择条件
+                null,//查询条件的参数
+                ContactsContract.Contacts.DISPLAY_NAME + " COLLATE LOCALIZED ASC"//根据本地语言进行排序
+        );
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        //确定要查询内容的行内下标
+        int i_idIndex = data.getColumnIndexOrThrow(ContactsContract.Contacts._ID);
+        int i_displayIndex = data.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME);
+        //临时存储查询数据的字符串
+        String temp = "";
+        //如若数据条目正确,开始遍历
+        if (data != null && data.getCount() > 0) {
+            //遍历游标
+            while (data.moveToNext()) {
+                //获得联系人ID
+                String id = data.getString(i_idIndex);
+                //获得联系人名字
+                String displayName = data.getString(i_displayIndex);
+                //更新临时数据
+                temp += "id = " + id + "\n" +
+                        "displayName = " + displayName + "\n" +
+                        "\n";
+            }
+            //把数据显示在UI上
+            tv_data.setText(temp);
+        }
+
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        //释放数据
+        tv_data.setText("");
+    }
 }

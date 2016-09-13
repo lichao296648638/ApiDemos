@@ -13,26 +13,39 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context="com.example.classtest.datastorage.ContentProviderActivity">
 
-        <TextView
-            android:id="@+id/tv_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30dp" />
-
-
-
-        <EditText
-            android:id="@+id/et_search"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30dp" />
 
-        <Button
-            android:id="@+id/bt_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="queryImage"
-            android:text="Search Content"
-            android:textAllCaps="false" />
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:id="@+id/bt_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="searchContacts"
+                android:text="Search Content"
+                android:textAllCaps="false" />
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+
+
+
     <ListView
         android:id="@+id/lv_cursor"
         android:layout_width="match_parent"

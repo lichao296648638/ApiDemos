@@ -1,1 +1,1 @@
-include ':app', ':animtest', ':datastoragetest', ':classtest', ':providerclient'
+include ':app', ':animtest', ':datastoragetest', ':classtest', ':providerclient', ':intenttest'

@@ -46,8 +46,6 @@ public class ContentProviderActivity extends
 
     String mSelectionClause = null;
 
-    // If non-null, this is the current filter the user has provided.
-    String mCurFilter;
 
     String[] mSelectionArgs = {""};
 
@@ -227,12 +225,8 @@ public class ContentProviderActivity extends
         };
 
         Uri baseUri;
-        if (mCurFilter != null) {
-            baseUri = Uri.withAppendedPath(Contacts.CONTENT_FILTER_URI,
-                    Uri.encode(mCurFilter));
-        } else {
-            baseUri = Contacts.CONTENT_URI;
-        }
+        baseUri = Contacts.CONTENT_URI;
+
 
         // Now create and return a CursorLoader that will take care of
         // creating a Cursor for the data being displayed.

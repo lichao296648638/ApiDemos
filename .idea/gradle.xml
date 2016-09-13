@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/classtest" />
             <option value="$PROJECT_DIR$/datastoragetest" />
+            <option value="$PROJECT_DIR$/intenttest" />
             <option value="$PROJECT_DIR$/providerclient" />
           </set>
         </option>
