@@ -3,11 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ApiDemos.iml" filepath="$PROJECT_DIR$/ApiDemos.iml" />
-      <module fileurl="file://$PROJECT_DIR$/animtest/animtest.iml" filepath="$PROJECT_DIR$/animtest/animtest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/activitytest/activitytest.iml" filepath="$PROJECT_DIR$/activitytest/activitytest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/classtest/classtest.iml" filepath="$PROJECT_DIR$/classtest/classtest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/datastoragetest/datastoragetest.iml" filepath="$PROJECT_DIR$/datastoragetest/datastoragetest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/intenttest/intenttest.iml" filepath="$PROJECT_DIR$/intenttest/intenttest.iml" />
       <module fileurl="file://$PROJECT_DIR$/providerclient/providerclient.iml" filepath="$PROJECT_DIR$/providerclient/providerclient.iml" />
     </modules>
   </component>
