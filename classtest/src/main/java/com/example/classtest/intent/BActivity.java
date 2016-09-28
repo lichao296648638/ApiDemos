@@ -59,9 +59,9 @@ public class BActivity extends BaseActivity {
         //显示指定要启动的组件
         Intent mIntent = new Intent(this, CActivity.class);
         //设置目标组件不压入栈中的标志
-        mIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+//        mIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         //启动目标组件
-        startActivity(mIntent);
+        startActivityForResult(mIntent, 0);
     }
 
 }

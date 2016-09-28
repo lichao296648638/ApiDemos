@@ -2,7 +2,10 @@ package com.example.classtest.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.Contacts;
 import android.view.View;
 import android.widget.TextView;
 
@@ -18,6 +21,8 @@ public class FirstActivity extends BaseActivity {
     private final int REQUEST_CODE_LOGIN = 0;
     private final int REQUEST_CODE_REGIST = 1;
     private final int REQUEST_CODE_OTHER = 2;
+    private final int REQUEST_CODE_READ = 3;
+
 
     //数据显示控件
     TextView tv_data;
@@ -48,13 +53,31 @@ public class FirstActivity extends BaseActivity {
 
             case Activity.RESULT_OK://处理成功
                 switch (requestCode){
-                    case REQUEST_CODE_LOGIN:
+                    case REQUEST_CODE_LOGIN://登陆
                         //更新UI
                         tv_data.setText(data.getStringExtra(SecondActivity.TAG));
                         break;
-                    case REQUEST_CODE_REGIST:
+                    case REQUEST_CODE_REGIST://注册
                         //更新UI
                         tv_data.setText(data.getStringExtra(SecondActivity.TAG));
+                        break;
+                    case REQUEST_CODE_READ://访问联系人
+                        //根据返回的data中的uri查询uri对应数据库中的Contacts.DISPLAY_NAME列
+                        Cursor cursor = getContentResolver().query(
+                                data.getData(),
+                                new String[] {Contacts.DISPLAY_NAME},
+                                null,
+                                null,
+                                null);
+                        //遍历游标
+                        if (cursor.moveToFirst()) { // True if the cursor is not empty
+                            //确定Contacts.DISPLAY_NAME在行中的下标
+                            int columnIndex = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
+                            //获得Contacts.DISPLAY_NAME列对应的值
+                            String name = cursor.getString(columnIndex);
+                            //更新UI
+                            tv_data.setText(name);
+                        }
                         break;
                 }
                 break;
@@ -105,5 +128,16 @@ public class FirstActivity extends BaseActivity {
         mIntent.putExtra(TAG, "Other");
         //启动返回结果的Activity
         startActivityForResult(mIntent, REQUEST_CODE_OTHER);
+    }
+
+    /**
+     * @description 访问联系人
+     * @param view 点击的视图
+     */
+    public void readContact(View view) {
+        //隐式启动选择联系人Activity
+        Intent mIntent = new Intent(Intent.ACTION_PICK, Contacts.CONTENT_URI);
+        //启动返回结果的Activity
+        startActivityForResult(mIntent, REQUEST_CODE_READ);
     }
 }

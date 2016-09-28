@@ -35,6 +35,14 @@
         android:textAllCaps="false"
         android:textSize="25dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="readContact"
+        android:text="Read Contact"
+        android:textAllCaps="false"
+        android:textSize="25dp" />
+
 
     <TextView
         android:id="@+id/tv_data"

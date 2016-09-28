@@ -41,4 +41,12 @@
         android:text="Start activity B"
         android:textAllCaps="false"
         android:textSize="25dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="oneKeyExit"
+        android:text="One key exit"
+        android:textAllCaps="false"
+        android:textSize="25dp" />
 </LinearLayout>

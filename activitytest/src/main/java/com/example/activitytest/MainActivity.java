@@ -27,8 +27,12 @@ public class MainActivity extends Activity {
         // If the request went well (OK) and the request was PICK_CONTACT_REQUEST
         if (resultCode == Activity.RESULT_OK && requestCode == 0) {
             // Perform a query to the contact's content provider for the contact's name
-            Cursor cursor = getContentResolver().query(data.getData(),
-                    new String[] {ContactsContract.Contacts.DISPLAY_NAME}, null, null, null);
+            Cursor cursor = getContentResolver().query(
+                    data.getData(),
+                    new String[] {ContactsContract.Contacts.DISPLAY_NAME},
+                    null,
+                    null,
+                    null);
             if (cursor.moveToFirst()) { // True if the cursor is not empty
                 int columnIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
                 String name = cursor.getString(columnIndex);

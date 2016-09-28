@@ -3,17 +3,19 @@ package com.example.providerclient;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.feicui.contacts.MyContactsContract;
 
 /**
- * @description 通讯大全ContentProvider的客户端
  * @author Neal 2016-09-12
+ * @description 通讯大全ContentProvider的客户端
  */
 public class MainActivity extends Activity {
     //用来显示数据的控件
@@ -37,9 +39,38 @@ public class MainActivity extends Activity {
      * 查询通讯大全的ContentProvider
      */
     private void queryProvider() {
-        //与普通的ContentProvider查询数据的方式相同
+//        //与普通的ContentProvider查询数据的方式相同
+//        Cursor cursor = getContentResolver().query(
+//                MyContactsContract.PHONETYPE_URI,//自定义的uri地址
+//                new String[]{"*"},
+//                null,
+//                null,
+//                null
+//        );
+//        //临时保存数据的字符
+//        String temp = "";
+//        //判断游标状态是否正常
+//        if (cursor != null && cursor.getCount() > 0) {
+//            //移动游标到第一行
+//            cursor.moveToFirst();
+//            //获得电话类型名称的列下标
+//            int i_typeNameIndex = cursor.getColumnIndexOrThrow(MyContactsContract.TYPENAME);
+//            //遍历游标
+//            do {
+//                //取到对应下标的类型名称
+//                String typeName = cursor.getString(
+//                        i_typeNameIndex
+//                );
+//                //拼接临时字符
+//                temp += "TypeName:" + typeName + "\n" + "\n";
+//
+//            } while (cursor.moveToNext());
+//            //更新UI
+//            tv_data.setText(temp);
+//        }
+
         Cursor cursor = getContentResolver().query(
-                MyContactsContract.PHONETYPE_URI,//自定义的uri地址
+                Uri.parse("content://" + MyContactsContract.AUTHORITY + "/Catering"),//自定义的uri地址
                 new String[]{"*"},
                 null,
                 null,
@@ -51,22 +82,21 @@ public class MainActivity extends Activity {
         if (cursor != null && cursor.getCount() > 0) {
             //移动游标到第一行
             cursor.moveToFirst();
-            //获得电话类型名称的列下标
-            int i_typeNameIndex = cursor.getColumnIndexOrThrow(MyContactsContract.TYPENAME);
+            //获得电话号码的列下标
+            int i_phoneNumberIndex = cursor.getColumnIndexOrThrow("phonenumber");
             //遍历游标
             do {
                 //取到对应下标的类型名称
-                String typeName = cursor.getString(
-                        i_typeNameIndex
+                String phoneNumber = cursor.getString(
+                        i_phoneNumberIndex
                 );
                 //拼接临时字符
-                temp += "TypeName:" + typeName + "\n" + "\n";
+                temp += "phonenumber:" + phoneNumber + "\n" + "\n";
 
             } while (cursor.moveToNext());
             //更新UI
             tv_data.setText(temp);
         }
-
 
     }
 
@@ -114,6 +144,26 @@ public class MainActivity extends Activity {
                 mSelection,//选择条件
                 null);//选择条件参数
 
+    }
+
+    /**
+     * @descrpition 把权限传递给其他应用去访问ContentProvider
+     * @param view
+     */
+    public void otherClient(View view) {
+        //指定一个指向其他引用的Intent
+        Intent mIntent = new Intent();
+        mIntent.setClassName(
+                "com.example.otherclient",
+                "com.example.otherclient.MainActivity"
+        );
+        //设置要查询的uri
+        mIntent.setData(Uri.parse("content://" + MyContactsContract.AUTHORITY + "/Catering"));
+
+        //设置传递临时权限的标志
+        mIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        //启动组件
+        startActivity(mIntent);
     }
 
 

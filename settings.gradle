@@ -1,1 +1,1 @@
-include ':app', ':classtest', ':activitytest', ':providerclient'
+include ':app', ':classtest', ':activitytest', ':providerclient', ':otherclient'

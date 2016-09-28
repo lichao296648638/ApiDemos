@@ -8,9 +8,12 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Process;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.classtest.BaseActivity;
 import com.example.classtest.R;
 
 import java.io.File;
@@ -21,16 +24,30 @@ import java.util.List;
  * @author Neal 2016-09-13
  * @description 展示intent用法的demo
  */
-public class AActivity extends Activity {
+public class AActivity extends BaseActivity {
 
     //两组自定义Action
     private final String NEWACTION = "com.feicui.lichao.NEWACTION";
     private final String OLDACTION = "com.feicui.lichao.OLDACTION";
 
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_a);
+    protected int setContent() {
+        return R.layout.activity_a;
+    }
+
+    @Override
+    protected void initView() {
+      byte a = 127;
+        byte b = 127;
+        b += a;
+        Log.i("lichao", b + "");
+    }
+
+    @Override
+    protected void setListener() {
+
     }
 
     /**
@@ -143,7 +160,8 @@ public class AActivity extends Activity {
         //将信息组放入Intent中
         mIntent.putExtras(mBundle);
         //启动目标组件
-        startActivity(mIntent);
+        startActivityForResult(mIntent, 0);
+//        startActivityForResult(mIntent, 1);
     }
 
     /**
@@ -252,5 +270,13 @@ public class AActivity extends Activity {
 //                                mIntent,
 //                                PackageManager.MATCH_DEFAULT_ONLY);
     }
+//
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putString("key", "value");
+//        Log.i("lichao", "调用");
+//    }
+
 
 }

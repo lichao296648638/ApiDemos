@@ -59,7 +59,15 @@ public class CActivity extends BaseActivity {
         //设定启动标记,该标记表示,存在跟目标Activity相同taskAffinity的栈,则压入,否则与默认效果相同
         mIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //启动目标组件
-        startActivity(mIntent);
+        startActivityForResult(mIntent, 0);
+    }
+
+    /**
+     * @description 一键退出功能
+     * @param view 点击的控件
+     */
+    public void oneKeyExit(View view) {
+        oneKeyExit();
     }
 
 }
