@@ -2,6 +2,7 @@ package com.example.classtest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ public abstract class BaseActivity extends Activity {
         //初始化Activity
         setContentView(setContent());
         initView();
+
         setListener();
         Log.i("lichao", "onCreate");
     }
@@ -59,7 +61,7 @@ public abstract class BaseActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //判断上一个Activity传过来的值是否是销毁标记
-        if(resultCode == RESULT_EXIT){
+        if (resultCode == RESULT_EXIT) {
             oneKeyExit();
         }
     }
@@ -100,4 +102,24 @@ public abstract class BaseActivity extends Activity {
         Log.i("lichao", "onRestart");
 
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //保存Activity的某个瞬间状态
+        outState.putString("key", "value");
+        Log.i("lichao", "onSaveInstanceState");
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.i("lichao", "onRestoreInstanceState");
+        //打印瞬时状态
+        if (savedInstanceState != null)
+            Log.i("lichao", "onRestoreInstanceState value = "  + savedInstanceState.getString("key"));
+
+    }
+
 }

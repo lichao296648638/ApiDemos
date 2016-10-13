@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="mycontactscontract">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/providerclient/libs/mycontactscontract.jar!/" />
+      <root url="jar://$PROJECT_DIR$/otherclient/libs/mycontactscontract.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

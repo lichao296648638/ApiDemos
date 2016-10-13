@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">课堂测试</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_frag">FragActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_inflater">InflaterActivity</string>
 </resources>

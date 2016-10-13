@@ -8,6 +8,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcel;
 import android.os.Process;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,7 @@ public class AActivity extends BaseActivity {
 
     @Override
     protected int setContent() {
+
         return R.layout.activity_a;
     }
 
@@ -76,6 +78,9 @@ public class AActivity extends BaseActivity {
     public void startActivityBySetClass(View view) {
         //声明一个默认的intent
         Intent mIntent = new Intent();
+        //放入某项序列化的类
+        Data mData = new Data();
+        mIntent.putExtra("data", mData);
         //给Intent设置要启动的类(本application内)
         mIntent.setClass(this, BActivity.class);
         //启动这一组件
@@ -277,6 +282,7 @@ public class AActivity extends BaseActivity {
 //        outState.putString("key", "value");
 //        Log.i("lichao", "调用");
 //    }
+
 
 
 }

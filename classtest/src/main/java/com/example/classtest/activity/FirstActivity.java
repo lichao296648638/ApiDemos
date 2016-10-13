@@ -37,7 +37,6 @@ public class FirstActivity extends BaseActivity {
     @Override
     protected void initView() {
         tv_data = (TextView) findViewById(R.id.tv_data);
-
     }
 
     @Override

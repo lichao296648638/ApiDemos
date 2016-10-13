@@ -48,6 +48,12 @@ public class BActivity extends BaseActivity {
                 " Value: " + mBundle.getString("Key1") + "\n" +
                 " Value: " + mBundle.getString("Key2") + "\n"
         );
+        //若获得的序列化数据不为空
+        if(mIntent.getParcelableExtra("data") != null){
+            //取出序列化数据并且强制转换
+            Data mData = mIntent.getParcelableExtra("data");
+            tv_data.setText(mData.i + "");
+        }
 
     }
 
